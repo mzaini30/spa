@@ -8,7 +8,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      
+
     - name: Install Go
       uses: actions/setup-go@v2
       with:
@@ -20,7 +20,7 @@ jobs:
     # - name: Test
     #   run: go test ./...
     - name: Build
-      rund: go build -o build/ app.go
+      run: go build -o build/ app.go
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
