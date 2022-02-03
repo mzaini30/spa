@@ -1,27 +1,30 @@
-on: [push]
-name: Build
+# workflow name
+name: Generate release-artifacts
+
+# on events
+on:
+  release:
+    types: 
+      - created
+
+# workflow tasks
 jobs:
-  test:
-    strategy:
-      matrix:
-        go-version: [1.16.x]
-        os: [windows-latest]
-    runs-on: ${{ matrix.os }}
+  generate:
+    name: Generate cross-platform builds
+    runs-on: ubuntu-latest
     steps:
-
-    - name: Install Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: ${{ matrix.go-version }}
-
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Build
-      run: go build -o build/ app.go
-
-    - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./build
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+      - name: Generate build files
+        uses: thatisuday/go-cross-build@v1
+        with:
+          platforms: 'linux/amd64, linux/386, windows/amd64, windows/386'
+          package: ''
+          name: 'app'
+          compress: 'false'
+          dest: 'build'
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
