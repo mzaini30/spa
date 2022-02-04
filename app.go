@@ -1,13 +1,16 @@
 package main
 
-import "net/http"
-
-// import "fmt"
-import spa "github.com/roberthodgen/spa-server"
-import "runtime"
-import "os/exec"
-
-// import "github.com/pkg/browser"
+import (
+	"net/http"
+	"strings"
+	"strconv"
+	"time"
+	spa "github.com/roberthodgen/spa-server"
+	"fmt"
+	"runtime"
+	"os/exec"
+	"math/rand"
+)
 
 func open(url string) error {
 	var cmd string
@@ -27,8 +30,12 @@ func open(url string) error {
 }
 
 func main() {
-	open("http://localhost:2020")
-	// fmt.Print("Silahkan buka localhost:2020")
-	// browser.OpenUrl('http://localhost:2020')
-	http.ListenAndServe(":2020", spa.SpaHandler(".", "index.html"))
+	rand.Seed(time.Now().UTC().UnixNano())
+	angka := strconv.Itoa(rand.Int())
+	angka = strings.Replace(angka, "0", "1", -1)
+	port := angka[0:4]
+
+	fmt.Println("Sedang membuka localhost:" + port + "....")
+	open("http://localhost:" + port)
+	http.ListenAndServe(":" + port, spa.SpaHandler(".", "index.html"))
 }
