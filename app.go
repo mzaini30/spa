@@ -1,15 +1,15 @@
 package main
 
 import (
-	"net/http"
-	"strings"
-	"strconv"
-	"time"
-	spa "github.com/roberthodgen/spa-server"
 	"fmt"
-	"runtime"
-	"os/exec"
+	spa "github.com/roberthodgen/spa-server"
 	"math/rand"
+	"net/http"
+	"os/exec"
+	"runtime"
+	"strconv"
+	"strings"
+	"time"
 )
 
 func open(url string) error {
@@ -37,5 +37,5 @@ func main() {
 
 	fmt.Println("Sedang membuka localhost:" + port + "....")
 	open("http://localhost:" + port)
-	http.ListenAndServe(":" + port, spa.SpaHandler(".", "index.html"))
+	http.ListenAndServe(":"+port, spa.SpaHandler(".", "index.html"))
 }
